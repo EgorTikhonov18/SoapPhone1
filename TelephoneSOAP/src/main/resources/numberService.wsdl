@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://example.com/numberservice"
+             targetNamespace="http://example.com/numberservice" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://schemas.xmlsoap.org/wsdl/
+http://schemas.xmlsoap.org/wsdl/soap/">
+    <message name="getNumbersRequest">
+        <part name="fullName" type="xsd:string"/>
+    </message>
+    <message name="getNumbersResponse">
+        <part name="numbers" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    </message>
+    <portType name="NumberServicePortType">
+        <operation name="getNumbers">
+            <input message="tns:getNumbersRequest"/>
+            <output message="tns:getNumbersResponse"/>
+        </operation>
+    </portType>
+    <binding name="NumberServiceSoapBinding" type="tns:NumberServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getNumbers">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="NumberService">
+        <port name="NumberServicePort" binding="tns:NumberServiceSoapBinding">
+            <soap:address location="http://localhost:8080/your-service-url"/>
+        </port>
+    </service>
+</definitions>

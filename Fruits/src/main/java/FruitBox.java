@@ -1,23 +1,31 @@
+import java.math.BigDecimal;
 import java.util.*;
 
 public class FruitBox<T extends Fruit>  {
 
-    public void setBox(ArrayList<T> box) {
-        this.box = box;
-    }
 
-    private ArrayList<T> box;
+    private List<T> box;
+
     int size = 0;
     public FruitBox(T... fruits) {
         box = new ArrayList<>(Arrays.asList(fruits)); // потестируй если, просто оставить с this
     }
 
-    public List<T> getFruitBox(){
+    public List<? extends Fruit> getFruitBox() {
         return box;
     }
-    public void addFruit(T fruit){ // можно ли тут без параметров
+
+   /* public void addFruit(T fruit){
         box.add(fruit);
         size++;
+    }*/
+    @SafeVarargs
+    public final void addFruits(T... fruit){
+        this.box.addAll(Arrays.asList(fruit));
+        size++;
+    }
+    private void AddSomeFruits(List<T> fruits){
+        this.box.addAll(fruits);
     }
     public T get(int index){
         return box.get(index);
@@ -27,11 +35,11 @@ public class FruitBox<T extends Fruit>  {
        for (int i = 0; i < box.size(); i++) {
             totalWeight += box.get(i).getWeight();
         }
-       return totalWeight;
+       return  totalWeight;
     }
     public void replaceFruits(FruitBox<T> newBox) {
-
-
+        newBox.AddSomeFruits(this.box);
+        this.box.clear();
     }
 //
     public int compareTo(FruitBox<? extends Fruit> box2){
@@ -49,4 +57,5 @@ public class FruitBox<T extends Fruit>  {
     public int size(){
         return size;
     }
+
 }
