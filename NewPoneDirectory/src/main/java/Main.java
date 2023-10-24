@@ -13,12 +13,14 @@ public class Main {
         System.out.println(td.getNumbers( "Иванов Иван"));
 
 
+
         System.out.println(td.getFullName("+1234567890"));
 
 
         //  td.removePhone("Сидоров Сидор", "+1111111111");
         System.out.println(td.getTelephoneDirectory());
-        //td.removePerson("Петров Петр", "+9876543210");
+
+        td.removeOwner( "+9876543210");
         System.out.println(td.getTelephoneDirectory());
     }
 }

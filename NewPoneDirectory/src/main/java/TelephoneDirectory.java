@@ -21,7 +21,7 @@ public class TelephoneDirectory {
         for (Map.Entry<String, Set<String>> entry : telephoneDirectory.entrySet()) {
             Set<String> values = entry.getValue();
             if (values.contains(personPhone)) {
-                return Optional.of(entry.getKey());
+                return Optional.ofNullable(entry.getKey());
             }
         }
         return Optional.empty();
@@ -35,23 +35,20 @@ public class TelephoneDirectory {
         return telephoneDirectory;
     }
 
-     public static void removeOwner(String personFullName, String personPhone){
-         telephoneDirectory.remove(personFullName);
+     public static void removeOwner(String personPhone){
+         for (Map.Entry<String, Set<String>> entry : telephoneDirectory.entrySet()) {
+             Set<String> values = entry.getValue();
+             if (values.contains(personPhone)) {
+                 values.remove(personPhone);
+                 if (values.isEmpty()) {
+                     telephoneDirectory.remove(entry.getKey());
+                     }
+                 break;
+             }
+         }
      }
     public static void removePhone(String personFullName, String personPhone) {
         telephoneDirectory.get(personFullName).remove(personPhone);
 
-       /* Set<String> numbers = telephoneDirectory.get(personFullName);
-        if (numbers.contains(personPhone)) {
-            numbers.remove(personPhone);*/
-
-        /*if (telephoneDirectory.containsKey(personFullName)) {
-            Set<String> numbers = telephoneDirectory.get(personFullName);
-            if (numbers.contains(personPhone)) {
-                numbers.remove(personPhone);
-            } else {
-                System.out.println();
-            }
-        }*/
     }
 }

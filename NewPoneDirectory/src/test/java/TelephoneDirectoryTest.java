@@ -2,10 +2,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.Collections.EMPTY_SET;
 
 public class TelephoneDirectoryTest {
     /*всего 10 тестов
@@ -16,39 +15,46 @@ public class TelephoneDirectoryTest {
      * 2 для removePerson - лицо успешно удалено
      */
     private TelephoneDirectory directory;
-
+        String personFullName = "John";
+        String phone = "123-456-7890";
     @BeforeEach
     public void setUp() {
         directory = new TelephoneDirectory();
     }
+
     @Test
-    public void testAddContact() {
-        directory.addRecord("John", "123-456-7890");
-        Set<String> numbers = directory.getNumbers("John");
-        Assertions.assertEquals(1, numbers.size());
-        Assertions.assertEquals("123-456-7890", numbers.contains("John"));
+    public void testAddRecord() {
+        directory.addRecord(personFullName, phone);
+        Set<String> numbers = directory.getNumbers(personFullName);
+        Assertions.assertEquals(true, numbers.contains(phone));
     }
 
     @Test
-    public void testRemoveContact() {
+    public void testRemoveOwner() {
         directory.addRecord("John", "123-456-7890");
-        directory.removePhone("John","123-456-7890" );
+        directory.removePhone("John", "123-456-7890");
         Set<String> numbers = directory.getNumbers("John");
-        Assertions.assertNull(numbers);
+        Assertions.assertEquals(EMPTY_SET, numbers);
     }
+
     @Test
     public void testGetNumbers() {
         directory.addRecord("John", "123-456-7890");
-        Set<String> numbers = directory.getNumbers("John");
-        Assertions.assertEquals(1, numbers.size());
-        Assertions.assertEquals("123-456-7890", numbers.contains("John") );
+        directory.addRecord("John", "123-456-7899");
+        Assertions.assertEquals(Set.of("123-456-7890", "123-456-7899"), directory.getNumbers("John"));
     }
-    /*@Test
-    public void testGetAllContactNames() {
+    @Test
+    public void testGetFullName() {
         directory.addRecord("John", "123-456-7890");
-        List<String> names = directory.getFullName("John");
-        Assertions.assertEquals(1, names.size());
-        Assertions.assertEquals("John", names.get(0));
-    }*/
+
+        Assertions.assertEquals(Optional.of("John"), directory.getFullName("123-456-7890"));
+    }
+    @Test
+    public void testRemovePhone() {
+        directory.addRecord("John", "123-456-7890");
+        directory.removePhone("John","123-456-7890");
+        Set<String> numbers = directory.getNumbers("John");
+        Assertions.assertEquals(EMPTY_SET, numbers);
+    }
 }
 
